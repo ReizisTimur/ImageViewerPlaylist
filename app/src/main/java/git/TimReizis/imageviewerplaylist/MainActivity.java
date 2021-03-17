@@ -2,7 +2,10 @@ package git.TimReizis.imageviewerplaylist;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +20,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements createPlaylistInt{
     String name;
     EditText namePL;
     ArrayList<String> names = new ArrayList();
@@ -25,16 +28,16 @@ public class MainActivity extends AppCompatActivity {
     deleteMenu dm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("MYLOG", "Build API "+ Build.VERSION.SDK_INT);
         //посторение главного окна
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        namePL = (EditText) findViewById(R.id.edit_text);
+//        namePL = (EditText) findViewById(R.id.edit_text);
         ListView plyalistsList = (ListView) findViewById(R.id.viewPlaylists);
         playlistsListAdapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, names);
         plyalistsList.setAdapter(playlistsListAdapter);
-
-        //обработка клика по списку плейлистов, открывается всплывающее меню выбора
-        // между редактированием и просмотром
+        //обработка длинного клика по списку плейлистов,
+        // меню удаления
         plyalistsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -45,22 +48,19 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        //обработка клика по меню, открывается редактирование
+        final Intent intent = new Intent(this, editPlaylist.class);
         plyalistsList.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //плейлист для редактирования
-                name = names.get(i);
-                //запуск меню
-                mainMenuDialog mmd = new mainMenuDialog();
-                mmd.setInf(name);
-                mmd.show(getSupportFragmentManager(), "mainmenu");
+                intent.putExtra("playlist", names.get(i));
+                startActivity(intent);
             }
         });
         updateListPlaylists();
     }
-        public void createPlaylist(View view){
+        public void addToPlaylist(String name){
         //создание плейлиста, чтение имени
-        String name = namePL.getText().toString();
         if (name.equals("")){
             name = "untitle";
         }
@@ -74,13 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
         //создание пустого плейлиста
-        namePL.setText("");
         FileOutputStream fos = null;
         try{
             fos= openFileOutput(name, MODE_PRIVATE);
-            fos.write("".getBytes());
+            fos.write(null);
         }
-        catch(Exception e){Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();}
+        catch (NullPointerException e){
+            Log.d("MYLOG","+++Exception+++ "+e);}
+        catch(Exception e){Toast.makeText(this,e.getMessage(), Toast.LENGTH_SHORT).show();}
         finally {
             try{
                 if(fos!=null) fos.close();
@@ -89,7 +90,15 @@ public class MainActivity extends AppCompatActivity {
         }
         updateListPlaylists();
     }
-     void updateListPlaylists(){
+
+    public void createPlaylist(View view){
+        //меню создания нового плейлиста
+        createPlaylistMA menu = new createPlaylistMA();
+        menu.show(getSupportFragmentManager(),"Create");
+        updateListPlaylists();
+    }
+    void updateListPlaylists(){
+        //обновление меню выдора плейлистов
          names.clear();
         for(String path: fileList()){
             names.add(path);
@@ -102,6 +111,20 @@ public class MainActivity extends AppCompatActivity {
         input3.notifyDataSetChanged();
 
     }
+    public boolean onCreateOptionsMenu(Menu menu){
+       getMenuInflater().inflate(R.menu.mainactivity_menu, menu);
+       return true;
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateListPlaylists();
+    }
 
+    public void showForEdit(String input){}
+
+    @Override
+    public void closeTask() {
+    }
 }

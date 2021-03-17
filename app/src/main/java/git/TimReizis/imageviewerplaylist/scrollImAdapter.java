@@ -7,22 +7,17 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class scrollImAdapter extends FragmentStateAdapter {
-    boolean first = true;
     scrollImAdapter(FragmentActivity fragmentActivity){
         super(fragmentActivity);
     }
 
     @Override
     public Fragment createFragment(int position){
-//        if (first){
-//            position=startViewImages.startpage;
-//        }
-//        first=false;
         return scrollImage.newInstant(position);
     }
     @Override
     public int getItemCount(){
 
-        return viewPlaylist.playlistMas.length;
+        return startViewImages.playlistAL.getAllUris().size();
     }
 }

@@ -9,26 +9,29 @@
     tools:context=".MainActivity">
 
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_text"
-        android:hint="Add new playlist"
-        android:text=""
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="1dp"
-        android:layout_marginLeft="5dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="80dp"
-        app:layout_constraintRight_toRightOf="parent"
-        />
+<!--    <EditText-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/edit_text"-->
+<!--        android:hint="Add new playlist"-->
+<!--        android:text=""-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:layout_marginTop="1dp"-->
+<!--        android:layout_marginLeft="5dp"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        android:layout_marginRight="80dp"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        />-->
 
     <Button
         android:layout_width="72dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="bottom"
-        android:text="Add"
-        android:layout_margin="2dp"
+        android:background="@color/colorBackgroundB"
+        android:text="Add Playlist"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/addButton"

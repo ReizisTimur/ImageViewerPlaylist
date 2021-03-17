@@ -1,6 +1,7 @@
 package git.TimReizis.imageviewerplaylist;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,7 @@ public class scrollImage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         ViewGroup result = (ViewGroup) inflater.inflate(R.layout.fragment_scrollimage, container, false);
         ImageView imageView = (ImageView) result.findViewById(R.id.scrollimageView);
-        String str= viewPlaylist.playlistMas[PageNumber];
+        String str= startViewImages.playlistAL.getAllUris().get(PageNumber);
         Uri uri = Uri.parse(str);
         imageView.setImageURI(uri);
         return result;
